@@ -32,9 +32,9 @@ bool loading =  false;
 @override
   void initState() {
     _nameController.text = widget.name;
-    _phoneController.text = widget.age;
+    _phoneController.text = widget.phone;
     _postionController.text = widget.position;
-    _ageController.text = widget.phone;
+    _ageController.text = widget.age;
 
     super.initState();
   }

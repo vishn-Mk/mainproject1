@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import '../../../services/db_service.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/custom_button.dart';
+import '../../payment_screen.dart';
 import '../player_root_screen.dart';
 
 class PlayerTurfBookingScreen extends StatefulWidget {
@@ -99,6 +100,8 @@ class _PlayerTurfBookingScreenState extends State<PlayerTurfBookingScreen> {
   }
 
   int? total;
+
+  bool load=false;
 
   void getTotal({required TimeOfDay startTime, required TimeOfDay endTime}) {
     DateTime startDateTime =
@@ -297,20 +300,28 @@ class _PlayerTurfBookingScreenState extends State<PlayerTurfBookingScreen> {
                               width: MediaQuery.of(context).size.width,
                               child: CustomButton(
                                 text: 'Proceed',
-                                onPressed: () {
+                                onPressed: () async{
                                   String formatSelectedDate =
                                       DateFormat('M/dd/yyyy')
                                           .format(_selectedValue);
 
                                           if(total! > 0){
 
-                                            bookTurf(
-                                      DbService.getLoginId()!,
-                                      formatSelectedDate,
-                                      startTimeFormatted!,
-                                      endTimeFormatted!,
-                                      total.toString()
-                                      );
+
+                                          if(load)
+                                            {
+                                              bookTurf(
+                                                  DbService.getLoginId()!,
+                                                  formatSelectedDate,
+                                                  startTimeFormatted!,
+                                                  endTimeFormatted!,
+                                                  total.toString()
+                                              );
+                                            }else{
+                                            load=await   Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScreen(totalAmount: total.toString(),),));
+
+
+                                          }
 
 
                                           }else{
