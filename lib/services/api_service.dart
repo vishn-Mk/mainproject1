@@ -137,7 +137,7 @@ class ApiService {
       required String name,
       required String postion, 
       }) async {
-      final url = '$baseUrl/api/player/update-player-profile/$loginId';
+      final url = '$baseUrl/api/player/update-player-profile/${DbService.getLoginId()}';
 
       try {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -153,15 +153,15 @@ class ApiService {
         );
         print('gggg');
 
-        final uri = Uri.parse(url).replace(queryParameters: {
+        final uri = Uri.parse(url);
+
+        print(uri);
+        final response = await http.post(uri,body:  {
           'name': name,
           'mobile': mobile,
           'age': age,
           'position': postion
         });
-
-        print(uri);
-        final response = await http.get(uri);
 
         print(response.body);
 
@@ -217,7 +217,7 @@ class ApiService {
         },
 
       );
-print(response.body);
+     print(response.body);
       if (response.statusCode == 200) {
         // Request successful, handle response if needed
       } else {

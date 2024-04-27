@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../../../widgets/custom_button.dart';
 import '../bookings/player_booking_screen.dart';
@@ -156,28 +158,38 @@ class _PlayerTurfDetailsScreenState extends State<PlayerTurfDetailsScreen> {
                     const SizedBox(
                       height: 20,
                     ),
+                    GestureDetector(
+                      onTap: () async{
 
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey.shade300)),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Call',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Icon(
-                            Icons.phone,
-                            size: 24,
-                          ),
-                        ],
+
+
+                        var number = widget.turfDetails['mobile'].toString(); //set the number here
+                        bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+
+
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey.shade300)),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Call',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Icon(
+                              Icons.phone,
+                              size: 24,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 

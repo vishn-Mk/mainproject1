@@ -27,6 +27,7 @@ class _PlayerPartnerScreenState extends State<PlayerPartnerScreen> {
 
 
     if (response.statusCode == 200) {
+      print(response.body);
 
       return jsonDecode(response.body)['data'];
 
@@ -34,6 +35,46 @@ class _PlayerPartnerScreenState extends State<PlayerPartnerScreen> {
       throw Exception('Failed to load requests data');
     }
   }
+
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
+  Future<void> _acceptRequest({required BuildContext  context,required String reqid}) async {
+    final url = 'https://vadakara-mca-turf-backend.onrender.com/api/player/accept-request';
+
+    // Encode the data
+    final Map<String, String> data = {
+      'login_id': DbService.getLoginId()!,
+      'request_id': reqid,
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: data
+    );
+
+    if (response.statusCode == 200) {
+      // Request successful
+      _showSnackBar(context, "Request accepted successfully");
+    } else {
+      // Request failed
+      _showSnackBar(context, "Failed to accept request. Please try again later.");
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +145,7 @@ class _PlayerPartnerScreenState extends State<PlayerPartnerScreen> {
                         trailing: CustomButton(
                           text: 'Accept',
                           onPressed: () {
-                            ApiService().addPartnerRequest(DbService.getLoginId()!,request['_id'] );
+                            _acceptRequest(context: context,reqid:request['_id'] );
                             setState(() {
 
                             });
